@@ -584,6 +584,9 @@ END_EXTERN_C()
 /* this flag is only used by include/require functions */
 #define STREAM_OPEN_FOR_ZEND_STREAM     0x00010000
 
+/* this flag is only used to specify using the error_log_mode in php.ini */
+#define STREAM_USE_ERROR_LOG_MODE       0x00020000
+
 int php_init_stream_wrappers(int module_number);
 void php_shutdown_stream_wrappers(int module_number);
 void php_shutdown_stream_hashes(void);
