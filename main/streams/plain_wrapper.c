@@ -1107,6 +1107,7 @@ PHPAPI php_stream *_php_stream_fopen(const char *filename, const char *mode, zen
 	php_stream *ret;
 	int persistent = options & STREAM_OPEN_PERSISTENT;
 	char *persistent_id = NULL;
+	int use_error_log_mode = options & STREAM_USE_ERROR_LOG_MODE;
 
 	if (FAILURE == php_stream_parse_fopen_modes(mode, &open_flags)) {
 		php_stream_wrapper_log_error(&php_plain_files_wrapper, options, "`%s' is not a valid mode for fopen", mode);
@@ -1136,10 +1137,14 @@ PHPAPI php_stream *_php_stream_fopen(const char *filename, const char *mode, zen
 				return ret;
 		}
 	}
+	int error_log_mode = 0666;
+	if (use_error_log_mode && PG(error_log_mode) > 0 && PG(error_log_mode) <= 0777) {
+		error_log_mode = PG(error_log_mode);
+	}
 #ifdef PHP_WIN32
-	fd = php_win32_ioutil_open(realpath, open_flags, 0666);
+	fd = php_win32_ioutil_open(realpath, open_flags, error_log_mode);
 #else
-	fd = open(realpath, open_flags, 0666);
+	fd = open(realpath, open_flags, error_log_mode);
 #endif
 	if (fd != -1)	{
 
