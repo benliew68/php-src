@@ -1375,7 +1375,7 @@ PHPAPI int _php_error_log_ex(int opt_err, const char *message, size_t message_le
 
 		case 3:		/*save to a file */
 			int stream_opts = REPORT_ERRORS;
-			if (headers && !strcmp(headers, "error_log_mode")) {
+			if (headers && !strcmp(headers, "use_ini_mode")) {
 				stream_opts |= STREAM_USE_ERROR_LOG_MODE;
 			}
 			stream = php_stream_open_wrapper(opt, "a", stream_opts, NULL);
